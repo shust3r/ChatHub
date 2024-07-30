@@ -1,0 +1,29 @@
+<div class="bg">
+    <div class="centered">
+
+        <div class="description">
+            <h2>Welcome to the ChatHub</h2>
+            <div>Join the Room to start Chatting</div>
+        </div>
+    
+        <form [formGroup]="joinRoomForm" class="container centered">
+    
+            <div class="logo">
+                <img [src]="'/assets/img/Logo.png'" width="200px" alt="profile">
+            </div>
+        
+            <div class="input">
+                <input formControlName="user" name="userName" type="text" id="userName" maxlength="10" placeholder="Nickname">
+            </div>
+    
+            <div class="input">
+                <input formControlName="room" name="roomName" type="text" id="roomName" placeholder="Room">
+            </div>
+    
+            <div class="submit">
+                <button [disabled]="joinRoomForm.invalid" (click)="joinRoom()" type="submit" class="submit">Join</button>
+            </div>
+        </form>
+    
+    </div>
+</div>

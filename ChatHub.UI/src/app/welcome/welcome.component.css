@@ -1,0 +1,29 @@
+.bg{
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    width: 90%;
+    height: 90%;
+    background-color: lightgray;
+    border-radius: 15px;
+}
+
+.centered {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+
+.description {
+    text-align: center;
+    margin: 40px;
+}
+
+.join {
+    border-radius: 5px;
+    font-size: 28px;
+    background-color: green;
+    color: white;
+}
