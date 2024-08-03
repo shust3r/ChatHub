@@ -1,26 +1,20 @@
+using ChatHub.API.Configurations;
+using ChatHub.API.Endpoints;
 using ChatHub.API.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
-builder.Services.AddSingleton<IDictionary<string, UserRoomConnection>>(op =>
-    new Dictionary<string,UserRoomConnection>());
 
-builder.Services.AddCors(o =>
-{
-    o.AddDefaultPolicy(builder =>
-    {
-        builder.WithOrigins("http://localhost:4200")
-        .AllowAnyHeader()
-        .AllowAnyMethod()
-        .AllowCredentials();
-    });
-});
+builder.Services.AddCustomDependencies();
 
 var app = builder.Build();
+
+using var scope = app.Services.CreateScope();
+var context = scope.ServiceProvider.GetRequiredService<DataContext>();
+await context.InitDB();
 
 if (app.Environment.IsDevelopment())
 {
@@ -30,11 +24,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseRouting();
 app.UseCors();
-app.UseEndpoints(endpoint =>
-{
-    endpoint.MapHub<ChatHub.API.Hub.ChatHub>("/chat");
-});
 
-app.MapControllers();
+app.MapChatEndpoints();
 
 app.Run();
