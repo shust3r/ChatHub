@@ -7,19 +7,25 @@ import { ChatComponent } from './chat/chat.component';
 import { JoinRoomComponent } from './join-room/join-room.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ChatListComponent } from './chat-list/chat-list.component';
+import { HttpClientModule } from '@angular/common/http';
+import { MessagesComponent } from './messages/messages.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ChatComponent,
     JoinRoomComponent,
-    WelcomeComponent
+    WelcomeComponent,
+    ChatListComponent,
+    MessagesComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   providers: [
     provideClientHydration()

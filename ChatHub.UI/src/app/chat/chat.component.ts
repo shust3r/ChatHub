@@ -1,6 +1,6 @@
 import { AfterViewChecked, Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
-import { ChatService } from '../chat.service';
 import { Router } from '@angular/router';
+import { ChatService } from '../Services/chat.service';
 
 @Component({
   selector: 'app-chat',

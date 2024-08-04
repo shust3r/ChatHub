@@ -19,7 +19,6 @@ export class ChatService {
 
   constructor() {
     this.start();
-    console.log("Connection is established successfully");
     
     this.connection.on("ReceiveMessage", (UserName: string, message: string, messageTime: string)=>{
       this.messages = [...this.messages, {UserName, message, messageTime}];

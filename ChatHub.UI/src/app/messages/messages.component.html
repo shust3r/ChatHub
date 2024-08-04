@@ -1,0 +1,37 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="centered collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/welcome">Home <span class="sr-only"></span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/chats">Chat history <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Join the chat</a>
+            </li>
+        </ul>
+        
+    </div>
+</nav>
+
+<div class="tableBorder">
+
+    <table class="table table-striped table-hover">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">Author</th>
+                <th scope="col">Message</th>
+                <th scope="col">Date</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let message of messages">
+            <tr>
+                <td>{{message.userName}}</td>
+                <td>{{message.content}}</td>
+                <td>{{message.messageTime | date: 'medium'}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>

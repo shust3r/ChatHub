@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ChatService } from '../chat.service';
+import { ChatService } from '../Services/chat.service';
 
 @Component({
   selector: 'app-join-room',
