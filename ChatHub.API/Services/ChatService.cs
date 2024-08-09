@@ -1,4 +1,5 @@
-﻿using ChatHub.API.Models;
+﻿using Azure.AI.TextAnalytics;
+using ChatHub.API.Models;
 using Dapper;
 
 namespace ChatHub.API.Services;
@@ -62,21 +63,25 @@ public class ChatService : IChatService
         await connection.ExecuteAsync(query, message);
     }
 
-    public async Task AddMessage(string chatName, string userName, string message, DateTime messageTime)
+    public async Task AddMessage(string chatName, string userName, string message, DocumentSentiment sentiment, DateTime messageTime)
     {
         var newMessage = new MessageDto
         {
             UserName = userName,
             Content = message,
             MessageTime = messageTime,
+            Sentiment = sentiment.Sentiment.ToString(),
+            PositiveScore = sentiment.ConfidenceScores.Positive,
+            NeutralScore = sentiment.ConfidenceScores.Neutral,
+            NegativeScore = sentiment.ConfidenceScores.Negative,
             ChatId = _chatIds[chatName]
         };
 
         var connection = _connection.Create();
 
         const string query = """
-            INSERT INTO Message (UserName, Content, MessageTime, Chat_id)
-            VALUES (@UserName, @Content, @MessageTime, @ChatId);
+            INSERT INTO Message (UserName, Content, MessageTime, Sentiment, PositiveScore, NeutralScore, NegativeScore, Chat_id)
+            VALUES (@UserName, @Content, @MessageTime, @Sentiment, @PositiveScore, @NeutralScore, @NegativeScore, @ChatId);
             """;
 
         await connection.ExecuteAsync(query, newMessage);

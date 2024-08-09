@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { DatabaseService } from '../Services/database.service';
 import { IMessage } from '../Interfaces/IMessage';
 

@@ -8,12 +8,14 @@ public class ChatHub : Microsoft.AspNetCore.SignalR.Hub
 {
     private readonly IDictionary<string, UserRoomConnection> _connection;
     private readonly IChatService _chatService;
+    private readonly TextAnalyticsService _textAnalyticsService;
 
     public ChatHub(IDictionary<string, UserRoomConnection> connection,
-        IChatService chatService)
+        IChatService chatService, TextAnalyticsService textAnalyticsService)
     {
         _connection = connection;
         _chatService = chatService;
+        _textAnalyticsService = textAnalyticsService;
     }
 
     public async Task JoinRoom(UserRoomConnection userConnection)
@@ -21,7 +23,7 @@ public class ChatHub : Microsoft.AspNetCore.SignalR.Hub
         await Groups.AddToGroupAsync(Context.ConnectionId, userConnection.RoomName!);
         _connection[Context.ConnectionId] = userConnection;
         await Clients.Groups(userConnection.RoomName!)
-            .SendAsync("ReceiveMessage", "Bot", $"{userConnection.UserName} has joined the Chat ", DateTime.UtcNow);
+            .SendAsync("ReceiveMessage", "Bot", $"{userConnection.UserName} has joined the Chat", DateTime.UtcNow);
         await SendConnectedUser(userConnection.RoomName!);
         
         await _chatService.AddJoined(userConnection.RoomName!, userConnection.UserName!, DateTime.UtcNow);
@@ -31,10 +33,13 @@ public class ChatHub : Microsoft.AspNetCore.SignalR.Hub
     {
         if(_connection.TryGetValue(Context.ConnectionId, out UserRoomConnection userRoomConnection))
         {
-            await Clients.Group(userRoomConnection.RoomName!)
-                .SendAsync("ReceiveMessage", userRoomConnection.UserName, message, DateTime.UtcNow);
+            var sentiment = await _textAnalyticsService.EvaluateMessage(message);
+            var emoji = _textAnalyticsService.AddEmoji(sentiment.Sentiment.ToString());
 
-            await _chatService.AddMessage(userRoomConnection.RoomName!, userRoomConnection.UserName!, message, DateTime.UtcNow);
+            await Clients.Group(userRoomConnection.RoomName!)
+                .SendAsync("ReceiveMessage", userRoomConnection.UserName, message + emoji, DateTime.UtcNow);
+
+            await _chatService.AddMessage(userRoomConnection.RoomName!, userRoomConnection.UserName!, message, sentiment, DateTime.UtcNow);
         }
     }
 

@@ -1,4 +1,6 @@
-﻿using ChatHub.API.Models;
+﻿using Azure;
+using Azure.AI.TextAnalytics;
+using ChatHub.API.Models;
 using ChatHub.API.Services;
 
 namespace ChatHub.API.Configurations;
@@ -12,6 +14,8 @@ public static class ServiceCollectionExtensions
 
         services.AddSingleton<IDictionary<string, int>>(o =>
             new Dictionary<string, int>());
+
+        services.AddSingleton<TextAnalyticsService>();
 
         services.AddSingleton<IChatService, ChatService>();
 
@@ -31,7 +35,9 @@ public static class ServiceCollectionExtensions
         {
             o.AddDefaultPolicy(builder =>
             {
-                builder.WithOrigins("http://localhost:4200")
+                builder
+                .WithOrigins("http://localhost:4200",
+                                "https://simplesignalrchat.azurewebsites.net")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials();

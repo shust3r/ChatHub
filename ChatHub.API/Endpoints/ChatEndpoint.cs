@@ -31,7 +31,10 @@ public static class ChatEndpoint
             using var connection = sqliteConnection.Create();
 
             const string query = """
-                SELECT Chat.id AS ChatId, Chat.Name AS ChatName, Message.id, Message.UserName, Message.Content, Message.MessageTime
+                SELECT Chat.id AS ChatId, Chat.Name AS ChatName, 
+                Message.id, Message.UserName, Message.Content, 
+                Message.MessageTime, Message.Sentiment,
+                Message.PositiveScore, Message.NeutralScore, Message.NegativeScore
                 FROM Chat
                 INNER JOIN Message
                 ON Chat.id = Message.Chat_id

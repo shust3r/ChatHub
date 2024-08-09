@@ -8,7 +8,7 @@ import { BehaviorSubject } from 'rxjs';
 export class ChatService {
 
   public connection : signalR.HubConnection = new signalR.HubConnectionBuilder()
-  .withUrl("http://localhost:5087/chat")
+  .withUrl("https://simplechatapi-f8ffdyevfha5bwd3.polandcentral-01.azurewebsites.net/chat/")
   .configureLogging(signalR.LogLevel.Information)
   .build();
 
@@ -19,7 +19,6 @@ export class ChatService {
 
   constructor() {
     this.start();
-    
     this.connection.on("ReceiveMessage", (UserName: string, message: string, messageTime: string)=>{
       this.messages = [...this.messages, {UserName, message, messageTime}];
       this.messages$.next(this.messages);
@@ -27,12 +26,12 @@ export class ChatService {
 
     this.connection.on("ConnectedUser", (users: any)=>{
       this.connectedUsers$.next(users);
-    })
+    });
   }
 
   public async start(){
     try {
-      await this.connection.start();
+      await this.connection.start().catch(function (e){});
     } catch (error) {
       console.log(error);
     }
@@ -47,6 +46,6 @@ export class ChatService {
   }
 
   public async leaveRoom(){
-    return this.connection.stop();
+    return this.connection.stop().catch(function (e){});
   }
 }

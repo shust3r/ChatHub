@@ -1,6 +1,7 @@
 import { AfterViewChecked, Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ChatService } from '../Services/chat.service';
+import { IMessage } from '../Interfaces/IMessage';
 
 @Component({
   selector: 'app-chat',
@@ -10,7 +11,7 @@ import { ChatService } from '../Services/chat.service';
 export class ChatComponent implements OnInit, AfterViewChecked {
   chatSvc = inject(ChatService);
   inputMessage = "";
-  messages: any[] = [];
+  messages: IMessage[] = [];
   router = inject(Router);
   loggedInUserName = sessionStorage.getItem("user");
   roomName = sessionStorage.getItem("room");

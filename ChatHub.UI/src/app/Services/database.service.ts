@@ -8,7 +8,7 @@ import { IMessage } from '../Interfaces/IMessage';
   providedIn: 'root'
 })
 export class DatabaseService {
-  private readonly api: string = "http://localhost:5087/chats/";
+  private readonly api: string = "https://simplechatapi-f8ffdyevfha5bwd3.polandcentral-01.azurewebsites.net/chats/";
 
   public chatId: number;
 
@@ -19,6 +19,7 @@ export class DatabaseService {
   }
 
   getMessages(): Observable<IMessage[]> {
+    if(this.chatId == undefined) this.chatId = 1;
     return this.http.get<IMessage[]>(`${this.api}${this.chatId}`);
   }
 

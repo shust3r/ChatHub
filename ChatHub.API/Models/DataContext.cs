@@ -39,10 +39,15 @@ public class DataContext
                     UserName TEXT NOT NULL,
                     Content TEXT,
                     MessageTime TEXT,
+                    Sentiment TEXT,
+                    PositiveScore REAL,
+                    NeutralScore REAL,
+                    NegativeScore REAL,
                     Chat_id INTEGER,
                     FOREIGN KEY(Chat_id) REFERENCES Chat(id) ON DELETE CASCADE
                 );
                 """;
+
             await connection.ExecuteAsync(query);
         }
     }

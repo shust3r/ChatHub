@@ -3,14 +3,12 @@
     justify-content: center;
 }
 
-.tableBorder {
-    position: absolute;
-    top: 10%;
-    left: 30%;
-    width: 40%;
-    height: 80%;
-}
-
 th, td {
     text-align: center;
+    vertical-align: middle;
+}
+
+table {
+    width: 50%;
+    margin: 0 auto;
 }
